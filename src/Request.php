@@ -8,20 +8,27 @@ class Request
 {
     public function __construct()
     {
-        $this->request = Req::createFromGlobals();
+        $this->request = new Req(
+            array_merge($_GET, $_POST),
+            array_merge($_GET, $_POST),
+            array(),
+            $_COOKIE,
+            $_FILES,
+            $_SERVER
+        );
     }
 
     public function client()
     {
         $data['client_id'] = $this->request->query->get('client_id');
-        $data['secret'] = $this->request->query->get('secret');
+        $data['secret'] = $this->request->query->get('client_secret');
 
         if (!$data['client_id']) {
             throw new \Exception("'client_id' is required in URL");
         }
 
         if (!$data['secret']) {
-            throw new \Exception("'secret' is required in URL");
+            throw new \Exception("'client_secret' is required in URL");
         }
 
         return $data;
