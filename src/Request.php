@@ -52,7 +52,11 @@ class Request
 
     public function token()
     {
-        $token = $this->request->headers->get('Authorization');
+        //php7: $token = getallheaders()['Authorization'] ?? null;
+        $token = null;
+        if (!empty(getallheaders()['Authorization'])) {
+            $token = getallheaders()['Authorization'];
+        }
 
         if (!$token) {
             $token = $this->request->query->get('token');
